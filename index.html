@@ -187,7 +187,7 @@
             unicode-bidi: embed;
         
 
-        /* تصميم فاتورة الطباعة المحسّن */
+        
    
         .no-print { display: none !important; }
     }
@@ -253,30 +253,17 @@
                 margin-top: 15px;
             }
         }
-        /* تصميم فاتورة الطباعة المحسّن */
     @media print {
-        /* إخفاء كل أجزاء الموقع والتطبيقات أثناء الطباعة */
-        body * {
-            display: none !important;
-        }
-        
-        /* إظهار صندوق الفاتورة المخصص فقط للطباعة وتركيزه */
-        #printable-invoice, #printable-invoice * {
+        body * { visibility: hidden !important; }
+        #printable-invoice, #printable-invoice * { visibility: visible !important; }
+        #printable-invoice { 
+            position: absolute; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            background: white; 
             display: block !important;
-            visibility: visible !important;
         }
-        
-        #printable-invoice {
-            position: absolute !important;
-            top: 0 !important;
-            right: 0 !important;
-            width: 100% !important;
-            margin: 0 !important;
-            padding: 10px !important;
-            background: #fff !important;
-            box-shadow: none !important;
-        }
-    }
         .no-print { display: none !important; }
     }
     </style>
