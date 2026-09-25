@@ -187,20 +187,22 @@
             unicode-bidi: embed;
         }
 
-        @media print {
-            body * { visibility: hidden; }
-            .printable-active, .printable-active * { visibility: visible; }
-            .printable-active {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                background: white !important;
-                border: none !important;
-                box-shadow: none !important;
-                padding: 20px !important;
-            }
-            .no-print { display: none !important; }
+        /* تصميم فاتورة الطباعة المحسّن */
+    @media print {
+        body * { visibility: hidden !important; }
+        #printable-invoice, #printable-invoice * { visibility: visible !important; }
+        #printable-invoice { 
+            position: absolute; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            padding: 20px; 
+            background: white; 
+            display: block !important;
+        }
+        .no-print { display: none !important; }
+    }
+            
             
             .print-invoice-header {
                 text-align: center;
