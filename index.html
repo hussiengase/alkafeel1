@@ -7,10 +7,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Aref+Ruqaa:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- ربط مكتبة Firebase (السحابية) -->
-    const firebaseConfig = {
-    databaseURL: "https://alkafeelstore-c5f79-default-rtdb.firebaseio.com/"
-};
+    <!-- استدعاء مكتبات Firebase الأساسية -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+  // تهيئة الاتصال بقاعدة البيانات السحابية
+  const firebaseConfig = {
+      databaseURL: "https://alkafeelstore-c5f79-default-rtdb.firebaseio.com/"
+  };
+  
+  if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+  }
+  const db = firebase.database();
+</script>
+
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
