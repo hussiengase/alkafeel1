@@ -602,20 +602,16 @@
             `;
         }
 
-        function printOrder(index) {
-    var printContent = document.getElementById('print-box-' + index).innerHTML;
-    var printWindow = window.open('', '', 'height=600,width=800');
-    printWindow.document.write('<html><head><title>فاتورة البيع</title>');
-    printWindow.document.write('<style>body{font-family:Cairo,sans-serif;direction:rtl;padding:20px;} table{width:100%;border-collapse:collapse;} th,td{border:1px solid #ddd;padding:8px;text-align:right;}</style>');
-    printWindow.document.write('</head><body>');
-    printWindow.document.write(printContent);
-    printWindow.document.write('</body></html>');
-    printWindow.document.close();
-    printWindow.focus();
-    setTimeout(function () {
-        printWindow.print();
-        printWindow.close();
-    }, 500);
+       function printOrder(index) { const targetBox = document.getElementById('order-box-' + index); const targetContent = document.getElementById('print-content-' + index);
+if (targetBox && targetContent) {
+    targetBox.classList.add('printable-active');
+    targetContent.classList.remove('hidden');
+    
+    window.print();
+    
+    targetBox.classList.remove('printable-active');
+    targetContent.classList.add('hidden');
+}
 }
 
         function showSettingsForm() {
