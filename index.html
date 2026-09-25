@@ -3,276 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الكفيل - للمنتجات الحيوانية والغذائية</title>
+    <title>متجر الكفيل - للمنتجات الغذائية والكماليات</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Aref+Ruqaa:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- استدعاء مكتبات Firebase الأساسية -->
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
-<script>
-  // تهيئة الاتصال بقاعدة البيانات السحابية
-  const firebaseConfig = {
-      databaseURL: "https://alkafeelstore-c5f79-default-rtdb.firebaseio.com/"
-  };
-  
-  if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-  }
-  const db = firebase.database();
-</script>
-
+    <!-- ربط مكتبات Firebase السحابية -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script>
+        if (!firebase.apps.length) {
+            firebase.initializeApp({
+                databaseURL: "https://alkafeelstore-c5f79-default-rtdb.firebaseio.com/"
+            });
+        }
+        const db = firebase.database();
+    </script>
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Cairo', sans-serif; background-color: #f4fbf4; color: #333; }
+        .main-header { background-color: #2d6a4f; text-align: center; padding: 15px 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); }
+        .store-logo-container { display: inline-block; text-align: center; }
+        .store-name { font-family: 'Aref Ruqaa', serif; color: #ffffff; font-size: 3.2rem; font-weight: 700; line-height: 1.2; text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3); }
+        .container { max-width: 1200px; margin: 20px auto; padding: 15px; }
+        .btn { background: #2d6a4f; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 1rem; font-family: 'Cairo', sans-serif; transition: 0.3s; }
+        .btn:hover { background: #1b4332; }
+        .btn-danger { background: #e76f51; }
+        .btn-danger:hover { background: #d64520; }
+        .panel { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-top: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; margin-top: 15px; }
+        .product-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; padding: 15px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.2s; }
+        .product-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .product-card h4 { margin-bottom: 10px; color: #2d6a4f; font-size: 1.2rem; }
+        .product-card p { font-weight: bold; color: #e76f51; margin-bottom: 10px; font-size: 1.1rem; }
+        input, select { padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 6px; width: 100%; font-family: 'Cairo', sans-serif; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        th { background-color: #2d6a4f; color: white; }
+        .nav-buttons { text-align: center; margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .badge { background: #e76f51; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; }
         
-        .main-header {
-            background-color: #2d6a4f;
-            text-align: center;
-            padding: 15px 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-        }
-        
-        .store-logo-container {
-            display: inline-block;
-            text-align: center;
-        }
-        .store-name {
-            font-family: 'Aref Ruqaa', serif;
-            color: #ffffff;
-            font-size: 3.2rem;
-            font-weight: 700;
-            line-height: 1.2;
-            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
-            margin-bottom: 0px;
-        }
-        .store-name-en {
-            color: #ffffff;
-            font-size: 1rem;
-            letter-spacing: 6px;
-            font-weight: bold;
-            opacity: 0.95;
-            margin-bottom: 4px;
-        }
-
-        .store-address {
-            color: #e8f5e9;
-            font-size: 1.1rem;
-            font-weight: bold;
-            margin-top: 2px;
-        }
-        .subtitle {
-            color: #c8e6c9;
-            font-size: 1rem;
-            font-weight: normal;
-        }
-
-        .login-container, #customer-section, #cashier-section {
-            background-color: #ffffff;
-            max-width: 950px;
-            margin: 30px auto;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        .login-container { max-width: 450px; text-align: center; }
-
-        .btn {
-            padding: 12px 20px;
-            margin: 5px 0;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            font-family: 'Cairo', sans-serif;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
-            cursor: pointer;
-        }
-        .btn-customer { background-color: #40916c; color: white; }
-        .btn-customer:hover { background-color: #2d6a4f; }
-        .btn-cashier { background-color: #e0e0e0; color: #333; }
-        .btn-cashier:hover { background-color: #d0d0d0; }
-        .btn-login { background-color: #2d6a4f; color: white; margin-top: 15px; }
-        .btn-login:hover { background-color: #40916c; }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-family: 'Cairo', sans-serif;
-            outline: none;
-            text-align: right;
-            transition: border-color 0.3s;
-        }
-        input:focus, textarea:focus { border-color: #40916c; }
-        .hidden { display: none; }
-        .error-msg { color: #d32f2f; font-size: 0.9rem; margin-top: 10px; font-weight: bold; }
-        .success-msg { color: #388e3c; font-size: 0.9rem; margin-top: 10px; font-weight: bold; }
-
-        .store-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #40916c;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .store-header h2 { color: #2d6a4f; }
-        .cashier-controls { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .workspace { background-color: #f4fbf4; padding: 20px; border-radius: 8px; border: 1px solid #c8e6c9; }
-
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .product-card {
-            background-color: #f4fbf4;
-            border: 1px solid #c8e6c9;
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-        }
-        .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .product-img {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-        }
-        .product-card h3 { color: #2d6a4f; font-size: 1.2rem; margin-bottom: 8px; }
-        .product-price { color: #40916c; font-size: 1.1rem; font-weight: bold; margin-bottom: 12px; }
-
-        .cart-info { display: flex; align-items: center; gap: 15px; }
-        .file-upload-label {
-            display: block;
-            background: #e8f5e9;
-            border: 2px dashed #40916c;
-            padding: 12px;
-            text-align: center;
-            border-radius: 8px;
-            cursor: pointer;
-            color: #2d6a4f;
-            font-weight: bold;
-            margin: 8px 0;
-            transition: background 0.3s;
-        }
-        .file-upload-label:hover { background: #d8f3dc; }
-
-        .order-card {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            text-align: right;
-            margin-bottom: 12px;
-            transition: box-shadow 0.3s;
-        }
-        .order-card:hover {
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-        }
-        .order-line {
-            margin-bottom: 6px;
-            font-size: 1.05rem;
-            direction: rtl;
-            unicode-bidi: embed;
-        }
-
+        /* تصميم فاتورة الطباعة */
         @media print {
             body * { visibility: hidden; }
-            .printable-active, .printable-active * { visibility: visible; }
-            .printable-active {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                background: white !important;
-                border: none !important;
-                box-shadow: none !important;
-                padding: 20px !important;
-            }
+            #printable-invoice, #printable-invoice * { visibility: visible; }
+            #printable-invoice { position: absolute; left: 0; top: 0; width: 100%; padding: 20px; background: white; }
             .no-print { display: none !important; }
-            
-            .print-invoice-header {
-                text-align: center;
-                margin-bottom: 20px;
-                border-bottom: 2px solid #333;
-                padding-bottom: 15px;
-            }
-            .print-store-name {
-                font-family: 'Aref Ruqaa', serif;
-                font-size: 2.5rem;
-                color: #000;
-                margin-bottom: 2px;
-            }
-            .print-store-address {
-                font-size: 1.1rem;
-                color: #444;
-                font-weight: bold;
-            }
-            .print-customer-info {
-                text-align: center;
-                margin-bottom: 20px;
-                background: #f9f9f9;
-                padding: 15px;
-                border-radius: 8px;
-                border: 1px solid #ddd;
-            }
-            .print-customer-name {
-                font-size: 1.3rem;
-                font-weight: bold;
-                color: #2d6a4f;
-                margin-bottom: 5px;
-            }
-            .print-customer-phone {
-                font-size: 1.1rem;
-                margin-bottom: 5px;
-            }
-            .print-customer-address {
-                font-size: 1.1rem;
-                color: #555;
-            }
-            .print-items-table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-bottom: 20px;
-            }
-            .print-items-table th, .print-items-table td {
-                border: 1px solid #ddd;
-                padding: 8px 12px;
-                text-align: right;
-            }
-            .print-items-table th {
-                background-color: #f1f1f1;
-            }
-            .print-total {
-                text-align: left;
-                font-size: 1.2rem;
-                font-weight: bold;
-                margin-top: 15px;
-            }
         }
     </style>
 </head>
@@ -280,377 +56,381 @@
 
     <header class="main-header no-print">
         <div class="store-logo-container">
-            <h1 class="store-name">الكفيل</h1>
-            <div class="store-name-en">A L K A F E E L</div>
+            <h1 class="store-name">متجر الكفيل</h1>
         </div>
-        <p class="store-address">📍 التنومة / قرب شارع 36</p>
-        <p class="subtitle">للمنتجات الحيوانية والغذائية</p>
     </header>
 
-    <main class="login-container no-print" id="login-section">
-        <div style="margin-bottom: 15px;">
-            <h2 style="font-family: 'Aref Ruqaa', serif; font-size: 2.2rem; color: #2d6a4f;">الكفيل</h2>
-            <p style="font-size: 0.9rem; letter-spacing: 3px; color: #666; font-weight: bold;">A L K A F E E L</p>
-        </div>
-        <p>اختر طريقة الدخول للمتابعة:</p>
-        
-        <div class="login-options" style="margin-top: 15px;">
-            <button class="btn btn-customer" onclick="enterAsCustomer()">الدخول كزبون (للتسوق)</button>
-            <button class="btn btn-cashier" onclick="showCashierLogin()">دخول الكاشير (الإدارة)</button>
+    <div class="container">
+        <!-- أزرار التنقل بين الواجهات -->
+        <div class="nav-buttons no-print">
+            <button class="btn" onclick="switchView('customer')"><i class="fas fa-store"></i> واجهة الزبون</button>
+            <button class="btn" onclick="switchView('cart')"><i class="fas fa-shopping-cart"></i> سلة المشتريات <span id="cart-count" class="badge">0</span></button>
+            <button class="btn" onclick="switchView('cashier')"><i class="fas fa-cash-register"></i> نظام الكاشير السريع</button>
+            <button class="btn" onclick="switchView('login')"><i class="fas fa-lock"></i> لوحة الإدارة</button>
         </div>
 
-        <div id="cashier-login-form" class="hidden">
-            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ddd;">
-            <h3>تسجيل دخول الكاشير</h3>
-            <input type="text" id="username" placeholder="اسم المستخدم">
-            <input type="password" id="password" placeholder="كلمة المرور">
-            <button class="btn btn-login" onclick="loginCashier()">تسجيل الدخول</button>
-            <p id="login-error" class="error-msg"></p>
-        </div>
-    </main>
-
-    <section id="customer-section" class="hidden no-print">
-        <div class="store-header">
-            <div>
-                <h2 style="font-family: 'Aref Ruqaa', serif; font-size: 1.8rem; color: #2d6a4f;">الكفيل</h2>
-                <span style="font-size: 0.8rem; letter-spacing: 2px; color: #555; font-weight: bold;">A L K A F E E L</span>
+        <!-- 1. واجهة الزبون -->
+        <div id="customer-view" class="panel">
+            <h2><i class="fas fa-boxes"></i> المنتجات المتوفرة في المتجر</h2>
+            <div style="margin-top: 10px;">
+                <input type="text" id="search-box" placeholder="ابحث عن منتج..." onkeyup="filterProducts()" style="max-width: 300px;">
             </div>
-            <div class="cart-info">
-                <span>🛒 السلة: <span id="cart-count">0</span> منتج</span>
-                <button class="btn btn-customer" style="margin-top: 0; width: auto;" onclick="showCart()">عرض السلة والدفع</button>
-                <button class="btn btn-cashier" style="margin-top: 0; width: auto;" onclick="logout()">الرئيسية</button>
+            <div id="customer-products-grid" class="grid">
+                <p>جاري تحميل المنتجات من السحابة...</p>
             </div>
         </div>
-        
-        <div id="products-grid" class="products-grid"></div>
-        <div id="customer-workspace" style="margin-top: 30px;"></div>
-    </section>
 
-    <section id="cashier-section" class="hidden">
-        <div class="store-header no-print">
-            <h2>لوحة تحكم الكاشير</h2>
-            <button class="btn btn-cashier" style="margin-top: 0; width: auto;" onclick="logout()">تسجيل الخروج</button>
+        <!-- 2. واجهة سلة المشتريات للزبون -->
+        <div id="cart-view" class="panel" style="display: none;">
+            <h2><i class="fas fa-shopping-cart"></i> سلة المشتريات الخاصة بك</h2>
+            <div id="cart-items-container" style="margin-top: 15px;">
+                <p>السلة فارغة حالياً.</p>
+            </div>
+            <div id="cart-summary" style="margin-top: 20px; font-size: 1.2rem; font-weight: bold; text-align: left; display: none;">
+                المجموع الكلي: <span id="cart-total-price">0</span> د.ع
+                <br><br>
+                <button class="btn" onclick="checkoutOrder()"><i class="fas fa-check-circle"></i> إرسال الطلب للكاشير</button>
+            </div>
         </div>
-        
-        <div class="cashier-controls no-print">
-            <button class="btn btn-customer" onclick="showAddProductForm()">إضافة منتج جديد</button>
-            <button class="btn btn-customer" onclick="showOrders()">طلبات الزبائن</button>
-            <button class="btn btn-customer" style="background-color: #2d6a4f;" onclick="showSettingsForm()">تعديل حساب الكاشير</button>
-            <button class="btn" style="background-color: #d32f2f; color: white; width: auto;" onclick="clearOldOrders()">مسح الطلبات</button>
+
+        <!-- 3. نظام الكاشير السريع (نقطة البيع POS) -->
+        <div id="cashier-view" class="panel" style="display: none;">
+            <h2><i class="fas fa-cash-register"></i> نقطة البيع السريعة (الكاشير)</h2>
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-top: 15px;">
+                <div>
+                    <h3>اختر المنتجات للبيع المباشر</h3>
+                    <div id="cashier-products-grid" class="grid" style="max-height: 400px; overflow-y: auto;"></div>
+                </div>
+                <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd;">
+                    <h3>فاتورة البيع الحالية</h3>
+                    <div id="pos-cart-items" style="margin-top: 10px; min-height: 150px; max-height: 250px; overflow-y: auto;">
+                        <p style="color: #777;">لم يتم اختيار منتجات</p>
+                    </div>
+                    <hr style="margin: 10px 0;">
+                    <h4>المجموع: <span id="pos-total">0</span> د.ع</h4>
+                    <button class="btn" onclick="printPosInvoice()" style="width: 100%; margin-top: 10px;"><i class="fas fa-print"></i> إصدار وطباعة الفاتورة</button>
+                </div>
+            </div>
         </div>
-        
-        <div id="cashier-workspace" class="workspace">
-            <p>مرحباً بك في لوحة تحكم الكاشير. يمكنك اختيار أحد الخيارات أعلاه.</p>
+
+        <!-- 4. شاشة تسجيل دخول الإدارة -->
+        <div id="login-section" class="panel" style="display: none; max-width: 400px; margin: 0 auto; text-align: center;">
+            <h3>تسجيل دخول الإدارة والكاشير</h3>
+            <input type="text" id="login-user" placeholder="اسم المستخدم">
+            <input type="password" id="login-pass" placeholder="كلمة المرور">
+            <button class="btn" onclick="checkLogin()" style="width: 100%; margin-top: 10px;">دخول</button>
+            <p id="login-msg" style="color: red; margin-top: 10px;"></p>
         </div>
-    </section>
+
+        <!-- 5. لوحة التحكم والإدارة الكاملة -->
+        <div id="admin-view" class="panel" style="display: none;">
+            <h2><i class="fas fa-cogs"></i> لوحة تحكم الكاشير وإدارة المخزون</h2>
+            
+            <div style="margin-top: 20px; background: #fafafa; padding: 15px; border-radius: 8px; border: 1px solid #eee;">
+                <h3>إضافة منتج جديد سحابياً</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 10px;">
+                    <input type="text" id="p-name" placeholder="اسم المنتج">
+                    <input type="number" id="p-price" placeholder="السعر (د.ع)">
+                    <input type="number" id="p-qty" placeholder="الكمية المتوفرة">
+                </div>
+                <button class="btn" onclick="addProduct()" style="margin-top: 10px;"><i class="fas fa-plus"></i> حفظ وإضافة المنتج</button>
+            </div>
+
+            <h3 style="margin-top: 30px;">إدارة المنتجات المخزنة</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>اسم المنتج</th>
+                        <th>السعر</th>
+                        <th>الكمية</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-products-table">
+                    <tr><td colspan="4">جاري التحميل...</td></tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin-top: 30px;">إعدادات حساب الدخول</h3>
+            <div style="max-width: 400px; margin-top: 10px;">
+                <input type="text" id="set-user" placeholder="اسم المستخدم الجديد">
+                <input type="password" id="set-pass" placeholder="كلمة المرور الجديدة">
+                <button class="btn" onclick="saveSettings()" style="margin-top: 5px;">تحديث بيانات الدخول</button>
+                <p id="settings-msg" style="color: green; margin-top: 5px;"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الفاتورة للطباعة الخفية -->
+    <div id="printable-invoice" style="display: none;">
+        <div style="text-align: center;">
+            <h2>متجر الكفيل</h2>
+            <p>للمنتجات الغذائية والكماليات - البصرة</p>
+            <hr style="margin: 10px 0;">
+        </div>
+        <p>التاريخ: <span id="inv-date"></span></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>المادة</th>
+                    <th>السعر</th>
+                    <th>الكمية</th>
+                    <th>المجموع</th>
+                </tr>
+            </thead>
+            <tbody id="inv-items-body"></tbody>
+        </table>
+        <h3 style="text-align: left; margin-top: 15px;">المجموع النهائي: <span id="inv-grand-total"></span> د.ع</h3>
+        <p style="text-align: center; margin-top: 30px;">شكراً لتعاملكم معنا، نتمنى لكم زيارة أخرى!</p>
+    </div>
 
     <script>
-        // إعدادات قاعدة بيانات Firebase المجانية الخاصة بمتجرك
-        
-
-        let products = [];
+        let cashierUser = localStorage.getItem('alkafil_user') || 'admin';
+        let cashierPass = localStorage.getItem('alkafil_pass') || '1234';
+        let productsData = {};
         let cart = [];
-        let orders = [];
-        let currentImageBase64 = "";
+        let posCart = [];
 
-        let cashierUser = localStorage.getItem('alkafil_user') || 'hussien';
-        let cashierPass = localStorage.getItem('alkafil_pass') || '0000';
+        function switchView(view) {
+            document.getElementById('customer-view').style.display = 'none';
+            document.getElementById('cart-view').style.display = 'none';
+            document.getElementById('cashier-view').style.display = 'none';
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('admin-view').style.display = 'none';
 
-        // الاستماع للتحديثات الفورية من قاعدة البيانات السحابية تلقائياً
-        db.ref('products').on('value', (snapshot) => {
-            const data = snapshot.val();
-            products = data ? Object.values(data) : [];
-            renderProducts();
-        });
-
-        db.ref('orders').on('value', (snapshot) => {
-            const data = snapshot.val();
-            orders = data ? Object.values(data) : [];
-        });
-
-        function enterAsCustomer() {
-            document.getElementById('login-section').classList.add('hidden');
-            document.getElementById('customer-section').classList.remove('hidden');
-            renderProducts();
+            if(view === 'customer') document.getElementById('customer-view').style.display = 'block';
+            else if(view === 'cart') { document.getElementById('cart-view').style.display = 'block'; renderCart(); }
+            else if(view === 'cashier') { document.getElementById('cashier-view').style.display = 'block'; renderCashierGrid(); }
+            else if(view === 'login') document.getElementById('login-section').style.display = 'block';
+            else if(view === 'admin') document.getElementById('admin-view').style.display = 'block';
         }
 
-        function showCashierLogin() {
-            document.getElementById('cashier-login-form').classList.toggle('hidden');
-        }
-
-        function loginCashier() {
-            const user = document.getElementById('username').value.trim();
-            const pass = document.getElementById('password').value.trim();
-            if (user === cashierUser && pass === cashierPass) {
-                document.getElementById('login-section').classList.add('hidden');
-                document.getElementById('cashier-section').classList.remove('hidden');
-                document.getElementById('login-error').innerText = '';
-                document.getElementById('username').value = '';
-                document.getElementById('password').value = '';
-                showOrders();
+        function checkLogin() {
+            const u = document.getElementById('login-user').value.trim();
+            const p = document.getElementById('login-pass').value.trim();
+            if (u === cashierUser && p === cashierPass) {
+                switchView('admin');
+                document.getElementById('login-msg').innerHTML = '';
+                document.getElementById('login-user').value = '';
+                document.getElementById('login-pass').value = '';
             } else {
-                document.getElementById('login-error').innerText = 'خطأ في اسم المستخدم أو كلمة المرور';
+                document.getElementById('login-msg').innerHTML = 'خطأ في اسم المستخدم أو كلمة المرور!';
             }
         }
 
-        function logout() {
-            document.getElementById('cashier-section').classList.add('hidden');
-            document.getElementById('customer-section').classList.add('hidden');
-            document.getElementById('login-section').classList.remove('hidden');
-            document.getElementById('cashier-login-form').classList.add('hidden');
-        }
+        function addProduct() {
+            const name = document.getElementById('p-name').value.trim();
+            const price = document.getElementById('p-price').value.trim();
+            const qty = document.getElementById('p-qty').value.trim();
 
-        function renderProducts() {
-            const grid = document.getElementById('products-grid');
-            if (!grid) return;
-            
-            if (products.length === 0) {
-                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #666;">لا توجد منتجات متوفرة حالياً.</p>';
+            if(!name || !price || !qty) {
+                alert('الرجاء إدخال كافة حقول المنتج بدقة');
                 return;
             }
 
-            grid.innerHTML = products.map((p, idx) => `
-                <div class="product-card">
-                    <img src="${p.image || 'https://via.placeholder.com/200'}" class="product-img" alt="${p.name}">
-                    <h3>${p.name}</h3>
-                    <p class="product-price">${p.price} د.ع</p>
-                    <button class="btn btn-customer" onclick="addToCart(${idx})">إضافة للسلة</button>
-                </div>
-            `).join('');
+            db.ref('products').push({
+                name: name,
+                price: Number(price),
+                qty: Number(qty)
+            });
+
+            document.getElementById('p-name').value = '';
+            document.getElementById('p-price').value = '';
+            document.getElementById('p-qty').value = '';
+            alert('تمت إضافة المنتج بنجاح للسحابة!');
         }
 
-        function addToCart(index) {
-            const product = products[index];
-            cart.push(product);
-            document.getElementById('cart-count').innerText = cart.length;
-            alert(`تم إضافة ${product.name} إلى السلة بنجاح!`);
-        }
-
-        function showCart() {
-            const workspace = document.getElementById('customer-workspace');
-            if (cart.length === 0) {
-                workspace.innerHTML = '<h3>سلة المشتريات فارغة</h3><p>أضف بعض المنتجات لتبدأ التسوق.</p>';
-                return;
+        function deleteProduct(id) {
+            if(confirm('هل أنت متأكد من حذف هذا المنتج؟')) {
+                db.ref('products/' + id).remove();
             }
-
-            let total = cart.reduce((sum, item) => sum + Number(item.price), 0);
-            workspace.innerHTML = `
-                <h3>محتويات السلة والدفع</h3>
-                <ul style="list-style: none; margin: 15px 0;">
-                    ${cart.map((item) => `<li style="padding: 8px 0; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between;"><span>${item.name}</span> <b>${item.price} د.ع</b></li>`).join('')}
-                </ul>
-                <h3 style="color: #2d6a4f; margin-bottom: 15px;">المجموع الكلي: ${total} د.ع</h3>
-                
-                <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #c8e6c9;">
-                    <h4>تأكيد الطلب وإرساله إلى الكاشير</h4>
-                    <input type="text" id="cust-name" placeholder="اسم الزبون الكريم">
-                    <input type="text" id="cust-phone" placeholder="رقم الهاتف">
-                    <textarea id="cust-address" placeholder="العنوان بالتفصيل (مثال: التنومة، قرب...)" rows="2"></textarea>
-                    <button class="btn btn-customer" onclick="submitOrder(${total})">تأكيد إرسال الطلب</button>
-                </div>
-            `;
-        }
-
-        function submitOrder(total) {
-            const name = document.getElementById('cust-name').value;
-            const phone = document.getElementById('cust-phone').value;
-            const address = document.getElementById('cust-address').value;
-
-            if(!name || !phone || !address) {
-                alert('الرجاء إدخال كافة بيانات التوصيل (الاسم، الهاتف، العنوان)');
-                return;
-            }
-
-            const newOrder = {
-                customerName: name,
-                phone: phone,
-                address: address,
-                items: cart,
-                total: total,
-                date: new Date().toLocaleString()
-            };
-
-            // رفع الطلب مباشرة إلى قاعدة البيانات السحابية
-            db.ref('orders').push(newOrder);
-
-            alert('تم إرسال طلبك بنجاح إلى الكاشير!');
-            cart = [];
-            document.getElementById('cart-count').innerText = 0;
-            document.getElementById('customer-workspace').innerHTML = '<p style="color: green; font-weight: bold; text-align:center;">تم استلام طلبك بنجاح ونقله للكاشير.</p>';
-        }
-
-        function showAddProductForm() {
-            currentImageBase64 = "";
-            const ws = document.getElementById('cashier-workspace');
-            ws.innerHTML = `
-                <h3>إضافة منتج جديد للمتجر</h3>
-                <input type="text" id="new-prod-name" placeholder="اسم المنتج (مثال: لحم غنم طازج)">
-                <input type="number" id="new-prod-price" placeholder="السعر (بالدينار العراقي)">
-                
-                <label class="file-upload-label">
-                    📁 اختر صورة المنتج من الجهاز
-                    <input type="file" id="prod-img-file" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
-                </label>
-                <div id="img-preview-text" style="font-size: 0.9rem; color: #388e3c; margin-bottom: 10px; font-weight: bold;"></div>
-
-                <button class="btn btn-customer" onclick="saveNewProduct()">حفظ المنتج ونشره</button>
-            `;
-        }
-
-        function handleImageUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    currentImageBase64 = e.target.result;
-                    document.getElementById('img-preview-text').innerText = "✅ تم اختيار الصورة بنجاح!";
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function saveNewProduct() {
-            const prodNameInput = document.getElementById('new-prod-name').value;
-            const price = document.getElementById('new-prod-price').value;
-
-            if(!prodNameInput || !price) {
-                alert('الرجاء كتابة اسم المنتج والسعر على الأقل.');
-                return;
-            }
-
-            const productData = { 
-                name: prodNameInput, 
-                price, 
-                image: currentImageBase64 || 'https://via.placeholder.com/200' 
-            };
-
-            // حفظ المنتج في السحابة ليرى الجميع التحديث فوراً
-            db.ref('products').push(productData);
-
-            alert('تم حفظ المنتج ورفع صورته بنجاح وأصبح متاحاً للزبائن!');
-            showAddProductForm();
-        }
-
-        function clearOldOrders() {
-            if(confirm('هل أنت متأكد من مسح جميع الطلبات؟')) {
-                db.ref('orders').remove();
-                showOrders();
-            }
-        }
-
-        function showOrders() {
-            const ws = document.getElementById('cashier-workspace');
-            if(orders.length === 0) {
-                ws.innerHTML = '<h3>طلبات الزبائن</h3><p>لا توجد طلبات جديدة حالياً.</p>';
-                return;
-            }
-
-            ws.innerHTML = `
-                <div style="margin-bottom: 15px;">
-                    <h3>طلبات الزبائن الواردة (${orders.length})</h3>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 15px;">
-                    ${orders.map((o, index) => `
-                        <div class="order-card" id="order-box-${index}">
-                            <div class="no-print">
-                                <div class="order-line"><b>اسم الزبون :</b> <span dir="auto">${o.customerName}</span></div>
-                                <div class="order-line"><b>الهاتف :</b> <span dir="ltr" style="display:inline-block;">${o.phone}</span></div>
-                                <div class="order-line"><b>عنوان الزبون :</b> <span dir="auto">${o.address}</span></div>
-                                <div class="order-line"><b>السعر الكلي :</b> <span dir="auto">${o.total} د.ع</span></div>
-                                <div class="order-line" style="color: #666; font-size: 0.9rem; margin-top: 8px;"><b>الوقت :</b> <span dir="ltr" style="display:inline-block;">${o.date}</span></div>
-                                
-                                <button class="btn btn-customer" style="width: auto; margin-top: 10px; padding: 6px 15px; font-size: 0.95rem;" onclick="printOrder(${index})">
-                                    <i class="fa fa-print"></i> طباعة الفاتورة
-                                </button>
-                            </div>
-
-                            <div class="print-invoice-content hidden" id="print-content-${index}">
-                                <div class="print-invoice-header">
-                                    <h1 class="print-store-name">الكفيل</h1>
-                                    <div class="print-store-address">📍 التنومة / قرب شارع 36 - للمنتجات الحيوانية والغذائية</div>
-                                </div>
-
-                                <div class="print-customer-info">
-                                    <div class="print-customer-name">${o.customerName}</div>
-                                    <div class="print-customer-phone" dir="ltr">📞 ${o.phone}</div>
-                                    <div class="print-customer-address">📍 ${o.address}</div>
-                                </div>
-
-                                <table class="print-items-table">
-                                    <thead>
-                                        <tr>
-                                            <th>اسم المنتج</th>
-                                            <th>السعر (د.ع)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        ${o.items.map(item => `
-                                            <tr>
-                                                <td>${item.name}</td>
-                                                <td><b>${item.price}</b></td>
-                                            </tr>
-                                        `).join('')}
-                                    </tbody>
-                                </table>
-
-                                <div class="print-total">
-                                    السعر الكلي: ${o.total} دينار عراقي
-                                </div>
-                                <div style="text-align: center; margin-top: 30px; font-size: 0.85rem; color: #777;">
-                                    تاريخ الطلب: ${o.date} - شكراً لتعاملكم معنا
-                                </div>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
-
-        function printOrder(index) {
-            document.querySelectorAll('.order-card').forEach(el => el.classList.remove('printable-active'));
-            document.querySelectorAll('.print-invoice-content').forEach(el => el.classList.add('hidden'));
-
-            const targetBox = document.getElementById(`order-box-${index}`);
-            const targetContent = document.getElementById(`print-content-${index}`);
-            
-            targetBox.classList.add('printable-active');
-            targetContent.classList.remove('hidden');
-
-            window.print();
-
-            targetBox.classList.remove('printable-active');
-            targetContent.classList.add('hidden');
-        }
-
-        function showSettingsForm() {
-            const ws = document.getElementById('cashier-workspace');
-            ws.innerHTML = `
-                <h3>تعديل بيانات دخول الكاشير</h3>
-                <p style="margin-bottom: 15px; font-size: 0.95rem; color: #555;">قم بتغيير اسم المستخدم أو كلمة المرور الخاصة بلوحة التحكم.</p>
-                <input type="text" id="set-user" placeholder="اسم المستخدم الجديد" value="${cashierUser}">
-                <input type="password" id="set-pass" placeholder="كلمة المرور الجديدة" value="${cashierPass}">
-                <button class="btn btn-customer" onclick="saveSettings()">حفظ التعديلات</button>
-                <p id="settings-msg"></p>
-            `;
         }
 
         function saveSettings() {
             const newUser = document.getElementById('set-user').value.trim();
             const newPass = document.getElementById('set-pass').value.trim();
+            if(newUser) cashierUser = newUser;
+            if(newPass) cashierPass = newPass;
+            localStorage.setItem('alkafil_user', cashierUser);
+            localStorage.setItem('alkafil_pass', cashierPass);
+            document.getElementById('settings-msg').innerHTML = 'تم تحديث البيانات بنجاح!';
+        }
 
-            if(!newUser || !newPass) {
-                alert('الرجاء إدخال اسم المستخدم وكلمة المرور.');
+        function addToCart(id) {
+            let p = productsData[id];
+            if(p.qty <= 0) {
+                alert('عذراً، المنتج نفاذ من المخزون!');
+                return;
+            }
+            let item = cart.find(i => i.id === id);
+            if(item) {
+                item.qty++;
+            } else {
+                cart.push({ id: id, name: p.name, price: p.price, qty: 1 });
+            }
+            updateCartBadge();
+            alert('تمت إضافة المنتج إلى السلة');
+        }
+
+        function updateCartBadge() {
+            let totalQty = cart.reduce((sum, i) => sum + i.qty, 0);
+            document.getElementById('cart-count').innerText = totalQty;
+        }
+
+        function renderCart() {
+            let container = document.getElementById('cart-items-container');
+            let summary = document.getElementById('cart-summary');
+            if(cart.length === 0) {
+                container.innerHTML = '<p>السلة فارغة حالياً.</p>';
+                summary.style.display = 'none';
+                return;
+            }
+            let html = '<table><thead><tr><th>المنتج</th><th>السعر</th><th>الكمية</th><th>المجموع</th></tr></thead><tbody>';
+            let grandTotal = 0;
+            cart.forEach(i => {
+                let total = i.price * i.qty;
+                grandTotal += total;
+                html += `<tr><td>${i.name}</td><td>${i.price} د.ع</td><td>${i.qty}</td><td>${total} د.ع</td></tr>`;
+            });
+            html += '</tbody></table>';
+            container.innerHTML = html;
+            document.getElementById('cart-total-price').innerText = grandTotal;
+            summary.style.display = 'block';
+        }
+
+        function checkoutOrder() {
+            alert('تم إرسال الطلب بنجاح! شكراً لتسوقك في متجر الكفيل.');
+            cart = [];
+            updateCartBadge();
+            switchView('customer');
+        }
+
+        function renderCashierGrid() {
+            let grid = document.getElementById('cashier-products-grid');
+            if(!productsData || Object.keys(productsData).length === 0) {
+                grid.innerHTML = '<p>لا توجد منتجات مسجلة.</p>';
+                return;
+            }
+            let html = '';
+            for(let id in productsData) {
+                let p = productsData[id];
+                html += `
+                    <div class="product-card" style="cursor: pointer;" onclick="addToPosCart('${id}')">
+                        <h4>${p.name}</h4>
+                        <p>${p.price} د.ع</p>
+                        <span style="font-size:0.8rem; color:#666;">المتوفر: ${p.qty}</span>
+                    </div>
+                `;
+            }
+            grid.innerHTML = html;
+        }
+
+        function addToPosCart(id) {
+            let p = productsData[id];
+            let item = posCart.find(i => i.id === id);
+            if(item) {
+                item.qty++;
+            } else {
+                posCart.push({ id: id, name: p.name, price: p.price, qty: 1 });
+            }
+            renderPosCart();
+        }
+
+        function renderPosCart() {
+            let container = document.getElementById('pos-cart-items');
+            let totalSpan = document.getElementById('pos-total');
+            if(posCart.length === 0) {
+                container.innerHTML = '<p style="color: #777;">لم يتم اختيار منتجات</p>';
+                totalSpan.innerText = '0';
+                return;
+            }
+            let html = '<ul style="list-style: none; padding: 0;">';
+            let total = 0;
+            posCart.forEach(i => {
+                let sub = i.price * i.qty;
+                total += sub;
+                html += `<li style="padding: 5px 0; border-bottom: 1px dashed #ddd; display: flex; justify-content: space-between;"><span>${i.name} (${i.qty})</span> <b>${sub} د.ع</b></li>`;
+            });
+            html += '</ul>';
+            container.innerHTML = html;
+            totalSpan.innerText = total;
+        }
+
+        function printPosInvoice() {
+            if(posCart.length === 0) {
+                alert('الفارغة فارغة، الرجاء اختيار منتجات أولاً!');
+                return;
+            }
+            document.getElementById('inv-date').innerText = new Date().toLocaleString();
+            let tbody = document.getElementById('inv-items-body');
+            let html = '';
+            let grandTotal = 0;
+            posCart.forEach(i => {
+                let sub = i.price * i.qty;
+                grandTotal += sub;
+                html += `<tr><td>${i.name}</td><td>${i.price}</td><td>${i.qty}</td><td>${sub}</td></tr>`;
+            });
+            tbody.innerHTML = html;
+            document.getElementById('inv-grand-total').innerText = grandTotal;
+
+            document.getElementById('printable-invoice').style.display = 'block';
+            window.print();
+            document.getElementById('printable-invoice').style.display = 'none';
+            posCart = [];
+            renderPosCart();
+        }
+
+        function filterProducts() {
+            let query = document.getElementById('search-box').value.toLowerCase();
+            let customerGrid = document.getElementById('customer-products-grid');
+            let cards = customerGrid.getElementsByClassName('product-card');
+            for(let card of cards) {
+                let title = card.getElementsByTagName('h4')[0].innerText.toLowerCase();
+                card.style.display = title.includes(query) ? 'block' : 'none';
+            }
+        }
+
+        // الاستماع الفوري لقاعدة البيانات السحابية والتحديث التلقائي
+        db.ref('products').on('value', (snapshot) => {
+            productsData = snapshot.val() || {};
+            let customerGrid = document.getElementById('customer-products-grid');
+            let adminTable = document.getElementById('admin-products-table');
+
+            if (Object.keys(productsData).length === 0) {
+                customerGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">لا توجد منتجات مضافة حالياً في السحابة.</p>';
+                adminTable.innerHTML = '<tr><td colspan="4">لا توجد منتجات مضافة حالياً.</td></tr>';
                 return;
             }
 
-            cashierUser = newUser;
-            cashierPass = newPass;
+            let customerHtml = '';
+            let adminHtml = '';
 
-            localStorage.setItem('alkafil_user', cashierUser);
-            localStorage.setItem('alkafil_pass', cashierPass);
+            for (let id in productsData) {
+                let p = productsData[id];
+                customerHtml += `
+                    <div class="product-card">
+                        <h4>${p.name}</h4>
+                        <p>${p.price} د.ع</p>
+                        <span style="font-size: 0.85rem; color: #666; display: block; margin-bottom: 10px;">المتوفر: ${p.qty}</span>
+                        <button class="btn" style="padding: 6px 12px; font-size: 0.9rem;" onclick="addToCart('${id}')"><i class="fas fa-cart-plus"></i> أضف للسلة</button>
+                    </div>
+                `;
 
-            document.getElementById('settings-msg').innerHTML = '<p class="success-msg">✅ تم تحديث بيانات الدخول بنجاح!</p>';
-        }
+                adminHtml += `
+                    <tr>
+                        <td>${p.name}</td>
+                        <td>${p.price} د.ع</td>
+                        <td>${p.qty}</td>
+                        <td>
+                            <button class="btn btn-danger" style="padding: 5px 10px; font-size: 0.85rem;" onclick="deleteProduct('${id}')">حذف</button>
+                        </td>
+                    </tr>
+                `;
+            }
+
+            customerGrid.innerHTML = customerHtml;
+            adminTable.innerHTML = adminHtml;
+        });
     </script>
 </body>
 </html>
