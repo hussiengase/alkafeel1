@@ -185,10 +185,14 @@
             font-size: 1.05rem;
             direction: rtl;
             unicode-bidi: embed;
-        }
+        
 
         /* تصميم فاتورة الطباعة المحسّن */
-    @media print {
+   
+        .no-print { display: none !important; }
+    }
+         /* تصميم فاتورة الطباعة المحسّن */
+       @media print {
         body * { visibility: hidden !important; }
         #printable-invoice, #printable-invoice * { visibility: visible !important; }
         #printable-invoice { 
@@ -201,8 +205,7 @@
             display: block !important;
         }
         .no-print { display: none !important; }
-    }
-            
+    }   
             
             .print-invoice-header {
                 text-align: center;
