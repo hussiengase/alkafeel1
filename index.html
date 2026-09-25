@@ -254,15 +254,32 @@
             }
         }
     @media print {
-        body * { visibility: hidden !important; }
-        #printable-invoice, #printable-invoice * { visibility: visible !important; }
-        #printable-invoice { 
-            position: absolute; 
-            left: 0; 
-            top: 0; 
-            width: 100%; 
-            background: white; 
-            display: block !important;
+        /* إخفاء كل عناصر الصفحة بشكل تام افتراضياً */
+        body * {
+            visibility: hidden !important;
+        }
+        
+        /* إظهار الفاتورة التفصيلية وحدها (التي في الأسفل) مع محتوياتها */
+        .print-invoice-content, .print-invoice-content * {
+            visibility: visible !important;
+        }
+        
+        /* تثبيت الفاتورة لتملأ الصفحة تماماً وتبدأ من الأعلى بلا فراغات */
+        .print-invoice-content {
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 10px !important;
+            background: #fff !important;
+        }
+        
+        /* إخفاء أزرار التحكم والقوائم غير المرغوبة وقت الطباعة */
+        .no-print {
+            display: none !important;
+        }
+    }
         }
         .no-print { display: none !important; }
     }
